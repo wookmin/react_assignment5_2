@@ -1,16 +1,17 @@
-import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 
 const ProductUpdate = () => {
-  const { id } = useParams(); // URL에서 상품 ID 가져오기
-  const navigate = useNavigate(); // 페이지 이동을 위한 hook
+  const { id } = useParams(); // URL에서 상품 ID를 가져옵니다.
   const [product, setProduct] = useState({
-    name: '',
-    category: '',
-    price: '',
-    quantity: '',
+    name: "",
+    category: "",
+    price: "",
+    quantity: "",
   });
+  const navigate = useNavigate();
 
+  // 상품 데이터를 API에서 가져오는 함수
   useEffect(() => {
     const fetchProductDetail = async () => {
       const response = await fetch(`https://your-api-url/products/${id}`);
@@ -21,6 +22,7 @@ const ProductUpdate = () => {
     fetchProductDetail();
   }, [id]);
 
+  // 상품 정보를 수정하는 함수
   const handleChange = (e) => {
     setProduct({
       ...product,
@@ -31,18 +33,23 @@ const ProductUpdate = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const response = await fetch(`https://your-api-url/products/${id}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
       body: JSON.stringify(product),
     });
 
     if (response.ok) {
-      alert('Product updated successfully!');
-      navigate('/list'); // 수정 후 상품 목록으로 이동
+      alert("Product updated successfully!");
+      navigate("/list"); // 수정 후 상품 목록으로 돌아감
     } else {
-      alert('Failed to update product');
+      alert("Failed to update product");
     }
   };
+
+  // 상품 데이터가 없으면 로딩 중 메시지 표시
+  if (!product) return <div>Loading...</div>;
 
   return (
     <div>

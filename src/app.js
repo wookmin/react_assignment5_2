@@ -10,6 +10,7 @@ function App() {
       <h1>My Product App</h1>
       <Routes>
         {/* 상품 목록 */}
+        <Route path="/" element={<ShowList />} />
         <Route path="/list" element={<ShowList />} />
         
         {/* 상품 상세 페이지 */}
