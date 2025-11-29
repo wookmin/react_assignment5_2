@@ -6,6 +6,7 @@ const ProductModal = ({ show, initialData, onClose, onSubmit }) => {
   const [price, setPrice] = useState("");
   const [quantity, setQuantity] = useState("");
 
+  // Modal data 설정
   useEffect(() => {
     if (initialData) {
       setName(initialData.name ?? "");
@@ -20,14 +21,16 @@ const ProductModal = ({ show, initialData, onClose, onSubmit }) => {
     }
   }, [initialData, show]);
 
+  // Modal이 닫혔을 때 아무것도 렌더링하지 않음
   if (!show) return null;
 
+  // 유효성 검사
   const handleSubmit = (e) => {
     e.preventDefault();
     const trimmedName = name.trim();
     const trimmedCategory = category.trim();
-    const numPrice = Number(price);
-    const numQuantity = Number(quantity);
+    const numPrice = parseFloat(price);
+    const numQuantity = parseInt(quantity, 10);
 
     if (trimmedName.length < 2) {
       alert("상품명은 2글자 이상 입력해줘.");
@@ -37,15 +40,16 @@ const ProductModal = ({ show, initialData, onClose, onSubmit }) => {
       alert("품목을 입력해줘.");
       return;
     }
-    if (!Number.isInteger(numPrice) || numPrice < 0) {
+    if (isNaN(numPrice) || numPrice < 0) {
       alert("가격은 0 이상 정수로 입력해줘.");
       return;
     }
-    if (!Number.isInteger(numQuantity) || numQuantity < 0) {
+    if (isNaN(numQuantity) || numQuantity < 0) {
       alert("수량은 0 이상 정수로 입력해줘.");
       return;
     }
 
+    // 유효성 검사 통과 후 폼 제출
     onSubmit({
       name: trimmedName,
       category: trimmedCategory,
@@ -54,6 +58,7 @@ const ProductModal = ({ show, initialData, onClose, onSubmit }) => {
     });
   };
 
+  // 수정인지 추가인지 판단
   const isEdit = Boolean(initialData);
 
   return (
